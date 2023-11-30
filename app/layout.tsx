@@ -7,8 +7,8 @@ import "./globals.css";
 const font = Urbanist({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Store",
-  description: "Store - The place for all your purchases.",
+  title: "Shiply Driver App",
+  description: "Driver App for Shiply",
 };
 
 export default function RootLayout({
