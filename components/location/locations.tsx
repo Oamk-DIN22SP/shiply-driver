@@ -1,13 +1,38 @@
+"use client";
+
+import { useEffect } from "react";
+import useLocation from "@/hooks/use-location";
+import getLocation from "@/actions/get-locations";
 import LocationItem from "./item";
 
 const Locations = () => {
-  return ( 
+  // hook to get data from store
+  const locationStore = useLocation();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const locations = await getLocation();
+        locationStore.setState({ data: locations });
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  return (
     <div className="flex flex-col gap-4">
-      <LocationItem />
-      <LocationItem />
-      <LocationItem />
+      {
+        locationStore?.data?.map((location) => (
+          <LocationItem
+            key={location.id}
+            location={location}
+          />
+        ))
+      }
+      Active: {locationStore?.active?.title}
     </div>
-   );
-}
- 
+  );
+};
+
 export default Locations;

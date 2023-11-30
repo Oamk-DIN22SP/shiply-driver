@@ -5,7 +5,6 @@ import Details from "@/components/details/details";
 import Panel from "@/components/ui/panel";
 
 export const revalidate = 0;
-
 const HomePage = async () => {
   return (
     <Container>
