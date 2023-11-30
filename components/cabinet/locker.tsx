@@ -27,6 +27,7 @@ const Locker: React.FC<LockerProps> = ({
 
   const changeDetailsState = () => {
     cabinetStore.setState({ state: cabinet?.status });
+    cabinetStore.setState({ activeCabinetId: cabinet?.id });
   }
   return ( 
     <div className={`w-[80px] h-[80px] bg-[#D5F9B8] flex items-center justify-center rounded hover:cursor-pointer font-bold ${bgColor} ${hoverColor}`} onClick={changeDetailsState}>

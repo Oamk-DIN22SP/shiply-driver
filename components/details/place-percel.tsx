@@ -1,23 +1,25 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Check, ChevronsUpDown } from "lucide-react"
- 
-import { cn } from "@/lib/utils"
-import Button  from "@/components/ui/button"
+import { Check, ChevronsUpDown } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import Button from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import { useState } from "react";
- 
+import useCabinet from "@/hooks/use-cabinet";
+import toast from "react-hot-toast";
+
 const dropPoint = [
   {
     value: "123",
@@ -35,11 +37,45 @@ const dropPoint = [
     value: "1011",
     label: "Delivery Number 1011",
   },
-]
+];
 
 const PlacePercel = () => {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [deliveryNumber, setDeliveryNumber] = useState("");
+  const cabinetStore = useCabinet();
+
+  const onSubmit = async () => {
+    try {
+      setLoading(true);
+      if (!value) {
+        toast.error("Please select a drop off point.");
+        return;
+      }
+      if (!deliveryNumber) {
+        toast.error("Please enter a delivery number.");
+        return;
+      }
+      // api call to match details
+      // API call to update cabinet status
+      cabinetStore.setState({ state: "complete" });
+      // find id in store data and update status
+      cabinetStore.data.find(
+        (cabinet) => {
+          if (cabinet.id === cabinetStore.activeCabinetId) {
+            cabinet.status = "ready-to-pickup";
+          }
+        });
+      // sycn data
+      
+    } catch (error: any) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-[#4A4A4A] text-[23px] font-bold leading-8">
@@ -63,8 +99,7 @@ const PlacePercel = () => {
               className="flex items-center justify-between w-[300px] bg-transparent border border-[#42820F] rounded-sm px-4 py-2 text-[#4A4A4A] text-sm font-semibold leading-5"
             >
               {value
-                ? dropPoint.find((point) => point.value === value)
-                    ?.label
+                ? dropPoint.find((point) => point.value === value)?.label
                 : "Select Drop off point..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -96,10 +131,20 @@ const PlacePercel = () => {
             </Command>
           </PopoverContent>
         </Popover>
-        <Input type="text" placeholder="Delivery Number" className="border border-[#42820F] focus:border-transparent focus:ring-0" />
+        <Input
+          type="text"
+          placeholder="Delivery Number"
+          className="border border-[#42820F] focus:border-transparent focus:ring-0"
+          value={deliveryNumber}
+          onChange={(e) => setDeliveryNumber(e.target.value)}
+        />
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
-        <Button onClick={() => {}} disabled={false} className="w-fit mt-6 bg-[#42820F]">
+        <Button
+          onClick={onSubmit}
+          disabled={loading}
+          className="w-fit mt-6 bg-[#42820F]"
+        >
           Lock
         </Button>
         <small>Leads to boxes and delivery number input.</small>

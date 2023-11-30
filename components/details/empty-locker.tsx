@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Button from "@/components/ui/button";
+import useCabinet from "@/hooks/use-cabinet";
 
 const EmptyLocker = () => {
+  const cabinetStore = useCabinet(); 
   return (
     <>
       <div className="aspect-square relative">
@@ -15,7 +17,11 @@ const EmptyLocker = () => {
         />
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
-        <Button onClick={() => {}} disabled={false} className="w-fit mt-6 bg-[#42820F]">
+        <Button onClick={
+          () => {
+            cabinetStore.setState({ state: "place-percel" });
+          }
+        } disabled={false} className="w-fit mt-6 bg-[#42820F]">
           Proceed
         </Button>
         <small>Leads to boxes and delivery number input.</small>
