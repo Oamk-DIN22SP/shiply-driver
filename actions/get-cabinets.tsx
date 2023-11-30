@@ -10,13 +10,19 @@ const getCabinets = async (locationId: String) => {
   const demoData: Cabinets[] = [{
     id: "1",
     number: "1",
-    status: "FREE",
+    status: "empty-locker",
   },
   {
     id: "2",
     number: "2",
-    status: "RESERVED",
-  }]
+    status: "ready-to-pickup",
+  },
+  {
+    id: "3",
+    number: "3",
+    status: "to-be-delivered",
+  }
+]
 
   return demoData;
 };
