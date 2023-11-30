@@ -3,6 +3,7 @@ import Locations from "@/components/location/locations";
 import Cabinets from "@/components/cabinet/cabinets";
 import Details from "@/components/details/details";
 import Panel from "@/components/ui/panel";
+import useLocation from "@/hooks/use-location";
 
 export const revalidate = 0;
 const HomePage = async () => {
