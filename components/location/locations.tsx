@@ -36,7 +36,6 @@ const Locations = () => {
           />
         ))
       }
-      Active: {locationStore?.active?.title}
     </div>
   );
 };
