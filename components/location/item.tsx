@@ -1,3 +1,5 @@
+import getCabinets from "@/actions/get-cabinets";
+import useCabinet from "@/hooks/use-cabinet";
 import useLocation from "@/hooks/use-location";
 import { cn } from "@/lib/utils";
 import { Location } from "@/types";
@@ -6,18 +8,27 @@ interface LocationItemProps {
 }
 const LocationItem: React.FC<LocationItemProps> = ({ location }) => {
   const locationStore = useLocation();
+  const cabinetStore = useCabinet();
+
+  const changeLocation = async (location: Location) => {
+    locationStore.setActive(location);
+    const cabinets = await getCabinets(location.id);
+    cabinetStore.setState({ data: cabinets });
+  };
   return (
     <div
-      className={cn("flex flex-row gap-1 items-center hover:cursor-pointer hover:bg-[#fedbc28e] p-4 border rounded-sm",
+      className={cn("flex flex-row gap-2 items-center hover:cursor-pointer hover:bg-[#fedbc28e] p-4 border rounded-sm",
         location?.id === locationStore.active?.id && "bg-[#FEDBC2]")}
-      onClick={() => {
-        locationStore.setActive(location);
-      }}
+      onClick={() => changeLocation(location)}
     >
-      <p className="bg-[#686868] text-white w-8 text-center border rounded-sm text-sm h-6">
+      <p className="bg-[#686868] text-white w-8 text-center border rounded-sm text-sm h-7 flex justify-center items-center">
         {location?.id}
       </p>
-      <p className="text-xs leading-3">{location?.title}</p>
+      <p className="text-xs">
+        {location?.title}
+        <br />
+        {location?.address}
+        </p>
     </div>
   );
 };
