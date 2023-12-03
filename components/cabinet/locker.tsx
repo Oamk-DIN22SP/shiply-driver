@@ -57,7 +57,7 @@ const Locker: React.FC<LockerProps> = ({ cabinet }) => {
       className={`w-[80px] h-[80px] bg-[#D5F9B8] flex items-center justify-center rounded hover:cursor-pointer font-bold ${bgColor} ${hoverColor}`}
       onClick={onCabinetClick}
     >
-      {cabinet?.id}
+      {cabinet?.number}
     </div>
   );
 };

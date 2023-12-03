@@ -9,6 +9,7 @@ import PlaceParcel from "./place-percel";
 import ReadyToPickUp from "./ready-to-pickup";
 import ToBeDelivered from "./to-be-delivered";
 import useCabinet from "@/hooks/use-cabinet";
+import Panel from "../ui/panel";
 
 //type State = "empty" | "empty-locker" | "complete" | "ready-to-pickup" | "picked-up" | "to-be-delivered" | "place-percel";
 
@@ -46,7 +47,11 @@ const Details = () => {
       break;
   }
 
-  return <div>{component}</div>;
+  return <Panel title={
+    cabinetStore.activeCabinet?.id
+      ? `Selected Cabinet ${cabinetStore.activeCabinet?.number}`
+      : "Select a Cabinet"
+  }>{component}</Panel>;
 };
 
 export default Details;

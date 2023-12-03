@@ -13,9 +13,7 @@ const HomePage = async () => {
           <Locations />
         </Panel>
         <Cabinets />
-        <Panel title="Details">
-          <Details />
-        </Panel>
+        <Details />
       </div>
     </Container>
   );

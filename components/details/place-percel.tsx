@@ -19,25 +19,9 @@ import {
 import { useState } from "react";
 import useCabinet from "@/hooks/use-cabinet";
 import toast from "react-hot-toast";
-
-const dropPoint = [
-  {
-    value: "123",
-    label: "Delivery Number 123",
-  },
-  {
-    value: "456",
-    label: "Delivery Number 456",
-  },
-  {
-    value: "789",
-    label: "Delivery Number 789",
-  },
-  {
-    value: "1011",
-    label: "Delivery Number 1011",
-  },
-];
+import useLocation from "@/hooks/use-location";
+import useParcel from "@/hooks/use-parcels";
+import parcelDrop from "@/actions/parcel-drop";
 
 const PlacePercel = () => {
   const [loading, setLoading] = useState(false);
@@ -45,6 +29,15 @@ const PlacePercel = () => {
   const [value, setValue] = useState("");
   const [deliveryNumber, setDeliveryNumber] = useState("");
   const cabinetStore = useCabinet();
+  const locationStore = useLocation();
+  const parcelStore = useParcel();
+
+  // search cabinetstore.data for cabinets with status to-be-delivered, get cabinets array
+  const pendingDropOffParcels = parcelStore.data.filter(
+    (parcel) => parcel.status === "picked"
+  );
+
+  console.log(parcelStore.data);
 
   const onSubmit = async () => {
     try {
@@ -57,18 +50,27 @@ const PlacePercel = () => {
         toast.error("Please enter a delivery number.");
         return;
       }
-      // api call to match details
-      // API call to update cabinet status
-      cabinetStore.setState({ state: "complete" });
-      // find id in store data and update status
-      cabinetStore.data.find(
-        (cabinet) => {
-          if (cabinet.id === cabinetStore.activeCabinetId) {
-            cabinet.status = "ready-to-pickup";
+      console.log(value);
+      const res = await parcelDrop(
+        value.match(/\d+/)?.[0] || "",
+        deliveryNumber,
+        cabinetStore.activeCabinet.id,
+        locationStore.active?.id || ""
+      );
+
+      if (res.parcel_id) {
+        toast.success("Successfully verified drop off.");
+        cabinetStore.setState({ state: "complete" });
+        // find id in store data and update status
+        cabinetStore.data.find((cabinet) => {
+          if (cabinet.id === cabinetStore.activeCabinet?.id) {
+            cabinet.status = "delivered";
           }
         });
-      // sycn data
-      
+      } else {
+        console.log(res);
+        toast.error(res.error);
+      }
     } catch (error: any) {
       toast.error("Something went wrong.");
     } finally {
@@ -90,29 +92,32 @@ const PlacePercel = () => {
         </span>
         .
       </h2>
-      <div className="py-8 flex flex-col justify-center items-center gap-4">
+      <div className="pt-14 px-12 flex flex-col justify-center items-center gap-4">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               role="combobox"
               aria-expanded={open}
-              className="flex items-center justify-between w-[300px] bg-transparent border border-[#42820F] rounded-sm px-4 py-2 text-[#4A4A4A] text-sm font-semibold leading-5"
+              className="flex items-center justify-between bg-transparent border border-[#42820F] rounded-sm py-2 text-[#4A4A4A] text-sm font-semibold leading-5 w-full"
             >
-              {value
-                ? dropPoint.find((point) => point.value === value)?.label
-                : "Select Drop off point..."}
+              {value || "Select Drop Off Point"}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0 border border-[#42820F]">
+          <PopoverContent className="p-0 border border-[#42820F]">
             <Command>
               <CommandInput placeholder="Search point..." />
               <CommandEmpty>No point found.</CommandEmpty>
               <CommandGroup>
-                {dropPoint.map((point) => (
+                {pendingDropOffParcels.length === 0 && (
+                  <CommandItem disabled>
+                    No drop off parcels available
+                  </CommandItem>
+                )}
+                {pendingDropOffParcels.map((item) => (
                   <CommandItem
-                    key={point.value}
-                    value={point.value}
+                    key={item.id}
+                    value={item.id}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
@@ -121,10 +126,10 @@ const PlacePercel = () => {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === point.value ? "opacity-100" : "opacity-0"
+                        value === item.id ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    {point.label}
+                    Parcel Identity / Sticker: {item.id}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -139,13 +144,13 @@ const PlacePercel = () => {
           onChange={(e) => setDeliveryNumber(e.target.value)}
         />
       </div>
-      <div className="flex flex-col items-center justify-center gap-1">
+      <div className="flex flex-col items-center justify-center gap-2">
         <Button
           onClick={onSubmit}
           disabled={loading}
           className="w-fit mt-6 bg-[#42820F]"
         >
-          Lock
+          Verify & Lock Cabinet
         </Button>
         <small>Leads to boxes and delivery number input.</small>
       </div>
