@@ -16,14 +16,14 @@ let state: String = "empty-locker";
 
 const Details = () => {
   let component;
-  const cabinetStore = useCabinet(); 
+  const cabinetStore = useCabinet();
   state = cabinetStore.state;
-  
+
   switch (state) {
-    case "empty":
+    case "initial":
       component = <Empty />;
       break;
-    case "empty-locker":
+    case "empty":
       component = <EmptyLocker />;
       break;
     case "complete":
@@ -46,13 +46,7 @@ const Details = () => {
       break;
   }
 
-  
-  return (
-
-    <div>
-      {component}
-    </div>
-  );
+  return <div>{component}</div>;
 };
 
 export default Details;

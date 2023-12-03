@@ -6,14 +6,14 @@ interface CabinetStore {
   data: Cabinets[];
   setState: (state: Partial<CabinetStore>) => void;
   state: String;
-  activeCabinetId: String;
+  activeCabinet: Cabinets;
 }
 
 const useCabinet = create<CabinetStore>((set) => ({
   data: [],
   setState: (state) => set(state),
-  state: "empty",
-  activeCabinetId: "",
+  state: "initial",
+  activeCabinet: {} as Cabinets,
 }));
 
 export default useCabinet;
