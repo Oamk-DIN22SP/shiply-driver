@@ -40,7 +40,7 @@ const ToBeDelivered = () => {
           This parcel should be delivered to{" "}
           <span className="font-bold">{
             locationStore.findTitleById(
-              cabinetStore.activeCabinet?.pacel_destination,
+              cabinetStore.activeCabinet?.parcel_destination,
               locationStore.data
             )
           }</span>.

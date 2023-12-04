@@ -19,6 +19,7 @@ const LocationItem: React.FC<LocationItemProps> = ({ location }) => {
     cabinetStore.setState({ data: cabinets });
     const parcels = await getParcelsByLocation(location.id);
     parcelStore.setState({ data: parcels });
+    cabinetStore.setState({ state: "initial" });
   };
   return (
     <div

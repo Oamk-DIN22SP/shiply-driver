@@ -12,7 +12,7 @@ export interface Cabinets {
   parcel_id: string;
   code: string;
   tracking_number: string;
-  pacel_destination: string;
+  parcel_destination: string;
 };
 
 export interface Parcel {
