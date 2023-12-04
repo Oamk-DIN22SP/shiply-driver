@@ -1,7 +1,7 @@
-import { DEV_API_URL, PROD_API_URL } from "@/config/backend_config";
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/parcels/location`;
 
 const getParcelsByLocation = async (location_id: string) => {
-  const res = await fetch(`${DEV_API_URL}/parcels/location/${location_id}`);
+  const res = await fetch(`${URL}/${location_id}`);
   return res.json();
 };
 

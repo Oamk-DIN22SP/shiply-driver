@@ -15,7 +15,7 @@ const UserAvater = () => {
     return null;
   }
   return ( 
-    <div className="ml-auto flex items-center gap-x-4 relative">
+    <div className="ml-auto flex items-center gap-x-4 relative cursor-pointer">
       <Image
         src="/avater.png"
         alt="Logo"

@@ -1,10 +1,10 @@
-import { DEV_API_URL, PROD_API_URL } from "@/config/backend_config";
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/driver/pick-up`;
 
 const parcelPickUp = async (
   cabinet_id: String,
   parcel_id: String,
 ) => {
-  const response = await fetch(`${DEV_API_URL}/driver/pick-up`, {
+  const response = await fetch(`${URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
