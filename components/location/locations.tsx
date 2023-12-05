@@ -33,6 +33,15 @@ const Locations = () => {
   }, []);
   return (
     <div className="flex flex-col gap-4">
+      {
+        locationStore?.data?.length === 0 && (
+          <div className="text-center py-20 flex">
+            <h1 className="text-[23px] font-bold leading-8 text-[#FF0000]">
+              Backend API Not Connected
+            </h1>
+          </div>
+        )
+      }
       {locationStore?.data?.map((location) => (
         <LocationItem key={location.id} location={location} />
       ))}
