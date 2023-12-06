@@ -116,8 +116,8 @@ const PlacePercel = () => {
                 )}
                 {pendingDropOffParcels.map((item) => (
                   <CommandItem
-                    key={item.id}
-                    value={item.id}
+                    key={item.parcelID}
+                    value={item.parcelID}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
@@ -126,10 +126,10 @@ const PlacePercel = () => {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === item.id ? "opacity-100" : "opacity-0"
+                        value === item.parcelID ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    Parcel Identity / Sticker: {item.id}
+                    Parcel Identity / Sticker: {item.parcelID}
                   </CommandItem>
                 ))}
               </CommandGroup>
