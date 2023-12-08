@@ -87,8 +87,7 @@ const PlacePercel = () => {
         This is a representation of the stickers pasted to the parcels in the
         drivers inventory{" "}
         <span className="text-[12px]">
-          (We imagine there are real boxes, driver looks at the boxes on
-          stickers and fills the delivery number input)
+          (We imagine there are real boxes, driver looks at the boxes sticker and places it in the cabinet) 
         </span>
         .
       </h2>
@@ -100,18 +99,18 @@ const PlacePercel = () => {
               aria-expanded={open}
               className="flex items-center justify-between bg-transparent border border-[#42820F] rounded-sm py-2 text-[#4A4A4A] text-sm font-semibold leading-5 w-full"
             >
-              {value || "Select Drop Off Point"}
+              {value || "Select Parcel Identity / Sticker"}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="p-0 border border-[#42820F]">
             <Command>
-              <CommandInput placeholder="Search point..." />
-              <CommandEmpty>No point found.</CommandEmpty>
+              <CommandInput placeholder="Search parcel..." />
+              <CommandEmpty>No Parcel found.</CommandEmpty>
               <CommandGroup>
                 {pendingDropOffParcels.length === 0 && (
                   <CommandItem disabled>
-                    No drop off parcels available
+                    Nothing to drop off at this location.
                   </CommandItem>
                 )}
                 {pendingDropOffParcels.map((item) => (
@@ -150,7 +149,7 @@ const PlacePercel = () => {
           disabled={loading}
           className="w-fit mt-6 bg-[#42820F]"
         >
-          Verify & Lock Cabinet
+          Confirm & Lock Cabinet
         </Button>
         <small>Leads to boxes and delivery number input.</small>
       </div>
