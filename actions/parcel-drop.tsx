@@ -2,7 +2,6 @@ const URL = `${process.env.NEXT_PUBLIC_API_URL}/driver/drop-off`;
 
 const parcelDrop = async (
   parcel_id: String,
-  tracking_number: String,
   cabinet_id: String,
   location_id: String
 ) => {
@@ -13,7 +12,6 @@ const parcelDrop = async (
     },
     body: JSON.stringify({
       parcel_id,
-      tracking_number,
       cabinet_id,
       location_id,
     }),

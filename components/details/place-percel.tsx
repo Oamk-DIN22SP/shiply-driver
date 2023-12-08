@@ -27,7 +27,6 @@ const PlacePercel = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [deliveryNumber, setDeliveryNumber] = useState("");
   const cabinetStore = useCabinet();
   const locationStore = useLocation();
   const parcelStore = useParcel();
@@ -37,8 +36,6 @@ const PlacePercel = () => {
     (parcel) => parcel.status === "picked"
   );
 
-  console.log(parcelStore.data);
-
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -46,14 +43,8 @@ const PlacePercel = () => {
         toast.error("Please select a drop off point.");
         return;
       }
-      if (!deliveryNumber) {
-        toast.error("Please enter a delivery number.");
-        return;
-      }
-      console.log(value);
       const res = await parcelDrop(
         value.match(/\d+/)?.[0] || "",
-        deliveryNumber,
         cabinetStore.activeCabinet.id,
         locationStore.active?.id || ""
       );
@@ -135,13 +126,6 @@ const PlacePercel = () => {
             </Command>
           </PopoverContent>
         </Popover>
-        <Input
-          type="text"
-          placeholder="Delivery Number"
-          className="border border-[#42820F] focus:border-transparent focus:ring-0"
-          value={deliveryNumber}
-          onChange={(e) => setDeliveryNumber(e.target.value)}
-        />
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
         <Button
@@ -149,9 +133,16 @@ const PlacePercel = () => {
           disabled={loading}
           className="w-fit mt-6 bg-[#42820F]"
         >
-          Confirm & Lock Cabinet
+          Drop & Lock Cabinet
         </Button>
-        <small>Leads to boxes and delivery number input.</small>
+        <small className="text-center py-4">
+          This is a simulation of
+          the driver dropping off a parcel at a location. The parcel is
+          identified by the sticker on the parcel. The driver will scan the
+          sticker and drop off the parcel at the location. The parcel will be
+          locked in the cabinet and the receiver will be notified that the parcel
+          has been dropped off (delivered)
+        </small>
       </div>
     </div>
   );
