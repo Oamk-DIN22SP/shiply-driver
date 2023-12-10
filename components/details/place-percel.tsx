@@ -69,6 +69,7 @@ const PlacePercel = () => {
     }
   };
 
+  console.log("pendingDropOffParcels", pendingDropOffParcels);
   return (
     <div>
       <h1 className="text-[#4A4A4A] text-[23px] font-bold leading-8">
@@ -83,6 +84,13 @@ const PlacePercel = () => {
         .
       </h2>
       <div className="pt-14 px-12 flex flex-col justify-center items-center gap-4">
+        <small className="text-[#42820F] font-bold -mb-2 text-left w-full">
+          {
+            value && "Tracking number: "+pendingDropOffParcels.find(
+              (parcel) => parcel.parcelID.toString() === value.match(/\d+/)?.[0]
+            )?.trackingNumber
+          }
+        </small>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -116,7 +124,7 @@ const PlacePercel = () => {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === item.parcelID ? "opacity-100" : "opacity-0"
+                        value.match(/\d+/)?.[0] == item.parcelID ? "opacity-100" : "opacity-0"
                       )}
                     />
                     Parcel Identity / Sticker: {item.parcelID}
@@ -126,6 +134,9 @@ const PlacePercel = () => {
             </Command>
           </PopoverContent>
         </Popover>
+        <small>
+          {pendingDropOffParcels.length} parcel(s) to be dropped off at this location.
+        </small>
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
         <Button

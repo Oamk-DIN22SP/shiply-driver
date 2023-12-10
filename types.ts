@@ -18,4 +18,5 @@ export interface Cabinets {
 export interface Parcel {
   parcelID: string;
   status: string;
+  trackingNumber: string;
 };
